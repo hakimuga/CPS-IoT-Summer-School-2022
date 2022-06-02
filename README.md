@@ -4,6 +4,9 @@
 
 ![Alt text](Seminaire/Diapositive23.JPG) 
 
+
+![Alt text](Seminaire/Diapositive24.JPG) 
+
 ![Alt text](Seminaire/Diapositive26.JPG) 
 
 ![Alt text](Seminaire/Diapositive28.JPG) 
