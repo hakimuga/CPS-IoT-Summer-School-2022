@@ -9,3 +9,12 @@
 
 ![Alt text](Seminaire/Diapositive26.JPG) 
 
+===============================================================
+
+****Baouya Abdelhakim****
+
+****Researcher, Verimag Lab****
+
+****Université Grenoble Alpes, France****
+
+****The use of the description is under Licence. Contact me.****
