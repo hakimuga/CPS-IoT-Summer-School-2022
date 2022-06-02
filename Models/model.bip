@@ -1,0 +1,281 @@
+
+
+@cpp(src="ext-cpp/utilities.cpp,ext-cpp/trace_helper.cpp,ext-cpp/proba_helper.cpp",include="utilities.hpp,trace_helper.hpp,proba_helper.hpp")
+
+package model
+
+
+    const data int C_C1 = 1
+    const data int C_C2 = 2
+
+
+    
+    extern function printf(string function_param_0)
+    
+    extern function printf(string function_param_0, int function_param_1)
+    
+    extern function printf(string function_param_0, int function_param_1, int function_param_2)
+    
+    extern function int IsClose(int function_param_0, int function_param_1, int function_param_2, int function_param_3)
+    
+    extern function int randomize(int function_param_0)
+    
+    extern function int randomizeWF(int function_param_0)
+
+
+
+    
+    port type port_type_silent ()
+    
+    port type port_type_cup (int wh, int wv, int rp)
+
+    
+    connector type connector_type_cup (port_type_cup p, port_type_cup q)
+        define (p q)
+    
+        on p q
+            down {
+                q.wh = p.wh;
+                q.wv = p.wv;
+                q.rp = p.rp;
+            }
+    end
+
+    
+    atom type Classes ()
+    
+        
+        data int wh
+        
+        data int wv
+        
+        data int rp
+        
+        data int wf
+        
+        data int c_cx
+        
+        data int c1_v
+        
+        data int c2_v
+    
+        data int c_c1
+
+        data int c_c2
+
+        data int v
+
+        data int days
+        
+        export port port_type_cup readValues(wh, wv, rp)
+        
+        port port_type_silent C1ToC2()
+        
+        port port_type_silent C2ToC1()
+        
+        port port_type_silent C1ToC1()
+        
+        port port_type_silent C2ToC2()
+        
+        port port_type_silent ToC1()
+        
+        port port_type_silent ToC2()
+        
+        place Init, C2, C1, Read
+        initial to Init
+            do {
+                wh = 0;
+                wv = 0;
+                rp = 0;
+                wf = 0;
+                c_cx = 0;
+                c1_v = 0;
+                c2_v = 0;
+                days = 0;
+		c_c1 =C_C1; c_c2 =C_C2;
+                printf("var int wh %d\n", wh);
+                printf("var int wv %d\n", wv);
+                printf("var int rp %d\n", rp);
+                printf("var int wf %d\n", wf);
+                printf("var int d %d\n", days);
+            }
+            
+            on readValues
+                from Init
+                to Read
+                do {
+		v=IsClose(wh, wv, rp, c_c1);
+                        if ((v  ==  1)) then
+                    c_cx = 1;
+                
+                fi
+		v=IsClose(wh, wv, rp, c_c2);
+                        if ((v  ==  1)) then
+                            c_cx = 2;
+                        
+                        fi
+                        printf("var int wh %d\n", wh);
+                        printf("var int wv %d\n", wv);
+                        printf("var int rp %d\n", rp);
+                        printf("var int wf %d\n", wf);
+                }
+            
+            on ToC1
+                from Read
+                to C1
+                provided ((c_cx  ==  1))
+                do {
+                        c1_v = randomize(c_c1);
+                        wf = randomizeWF(c_c1);
+                        wh = 1;
+                        wv = 0;
+                        rp = 1;
+                        printf("var int wh %d\n", wh);
+                        printf("var int wv %d\n", wv);
+                        printf("var int rp %d\n", rp);
+                        printf("var int wf %d\n", wf);
+					                       days = days +1;
+                        printf("var int d %d\n", days);
+                }
+            
+            on ToC2
+                from Read
+                to C2
+                provided ((c_cx  ==  2))
+                do {
+                        c2_v = randomize(c_c2);
+                        wf = randomizeWF(c_c2);
+                        wh = 1;
+                        wv = 0;
+                        rp = 0;
+                        printf("var int wh %d\n", wh);
+                        printf("var int wv %d\n", wv);
+                        printf("var int rp %d\n", rp);
+                        printf("var int wf %d\n", wf);
+					                       days = days +1;
+                        printf("var int d %d\n", days);
+                }
+            
+            on C1ToC1
+                from C1
+                to C1
+                provided ((c1_v  ==  0))
+                do {
+                        c1_v = randomize(c_c1);
+                        wh = 1;
+                        wv = 0;
+                        rp = 1;
+                        printf("var int wh %d\n", wh);
+                        printf("var int wv %d\n", wv);
+                        printf("var int rp %d\n", rp);
+                        wf = randomizeWF(c_c1);
+                        printf("var int wf %d\n", wf);
+					                       days = days +1;
+                        printf("var int d %d\n", days);
+                }
+            
+            on C2ToC2
+                from C2
+                to C2
+                provided ((c2_v  ==  0))
+                do {
+                        c2_v = randomize(c_c2);
+                        wh = 1;
+                        wv = 0;
+                        rp = 0;
+                        printf("var int wh %d\n", wh);
+                        printf("var int wv %d\n", wv);
+                        printf("var int rp %d\n", rp);
+                        wf = randomizeWF(c_c2);
+                        printf("var int wf %d\n", wf);
+					                       days = days +1;
+                        printf("var int d %d\n", days);
+                }
+            
+            on C1ToC2
+                from C1
+                to C2
+                provided ((c1_v  ==  1))
+                do {
+                        c2_v = randomize(c_c2);
+                        wh = 1;
+                        wv = 0;
+                        rp = 0;
+                        printf("var int wh %d\n", wh);
+                        printf("var int wv %d\n", wv);
+                        printf("var int rp %d\n", rp);
+                        wf = randomizeWF(c_c2);
+                        printf("var int wf %d\n", wf);
+					                       days = days +1;
+                        printf("var int d %d\n", days);
+                }
+            
+            on C2ToC1
+                from C2
+                to C1
+                provided ((c2_v  ==  1))
+                do {
+                        c1_v = randomize(c_c1);
+                        wh = 1;
+                        wv = 0;
+                        rp = 1;
+                        printf("var int wh %d\n", wh);
+                        printf("var int wv %d\n", wv);
+                        printf("var int rp %d\n", rp);
+                        wf = randomizeWF(c_c1);
+                        printf("var int wf %d\n", wf);
+					                       days = days +1;
+                        printf("var int d %d\n", days);
+                }
+    
+    
+    end
+
+    
+    atom type Source ()
+    
+        
+        data int wh
+        
+        data int wv
+        
+        data int rp
+    
+        
+        
+        export port port_type_cup writeValues(wh, wv, rp)
+        
+        place Init, final
+        initial to Init
+            do {
+                wh = 1;
+                wv = 1;
+                rp = 0;
+                //printf("var int wh %d\n", wh);
+                //printf("var int wv %d\n", wv);
+                //printf("var int rp %d\n", rp);
+            }
+            
+            on writeValues
+                from Init
+                to final
+                do {
+                        //printf("var int wh %d\n", wh);
+                        //printf("var int wv %d\n", wv);
+                        //printf("var int rp %d\n", rp);
+                }
+    
+    
+    end
+
+    
+    compound type Compound ()
+    
+        component Classes Instance_Classes ()
+        component Source Instance_Source ()
+    
+        connector connector_type_cup read_write_conn (Instance_Source.writeValues, Instance_Classes.readValues)
+    
+    end
+
+end
